@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call(AuthorSeeder::class);
+        $this->call(RubricSeeder::class);
+        $this->call(NewsSeeder::class);
     }
 }

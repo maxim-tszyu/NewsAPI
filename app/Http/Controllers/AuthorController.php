@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAuthorRequest;
-//use App\Http\Requests\UpdateAuthorRequest;
+
 use App\Http\Resources\AuthorResource;
+use App\Http\Resources\NewsResource;
 use App\Models\Author;
 
 class AuthorController extends Controller
@@ -13,6 +14,13 @@ class AuthorController extends Controller
     {
         return AuthorResource::collection(Author::all());
     }
+
+    public function show(Author $author)
+    {
+        $news = $author->news()->with('rubrics')->get();
+        return NewsResource::collection($news);
+    }
+
     public function store(StoreAuthorRequest $request)
     {
         $validated = $request->validated();

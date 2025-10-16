@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Rubric;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Rubric>
+ * @extends Factory<Rubric>
  */
 class RubricFactory extends Factory
 {
@@ -16,8 +17,11 @@ class RubricFactory extends Factory
      */
     public function definition(): array
     {
+        $parent = Rubric::inRandomOrder()->first();
+
         return [
-            //
+            'title' => $this->faker->words(1, true),
+            'parent_id' => $parent?->id,
         ];
     }
 }
