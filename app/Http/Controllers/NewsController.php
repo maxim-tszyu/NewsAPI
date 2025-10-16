@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreNewsRequest;
 use App\Http\Resources\NewsResource;
-use App\Models\Author;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -12,41 +12,40 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function author_news(Author $author)
+    public function search(Request $request)
     {
-        $news = $author->news()->with('rubrics')->get();
-        return NewsResource::collection($news);
+        $query = News::query();
+
+        if ($request->has('query')) {
+            $query->where('title', 'like', '%' . $request->query('query') . '%');
+        }
+
+        return NewsResource::collection($query->get());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreNewsRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $rubrics = $validated['rubrics'];
+        unset($validated['rubrics']);
+
+        $news = News::create($validated);
+
+        if (!empty($rubrics)) {
+            $news->rubrics()->attach($rubrics);
+        }
+
+        $news->load(['author', 'rubrics']);
+
+        return new NewsResource($news);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(News $news)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, News $news)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(News $news)
-    {
-        //
+        return new NewsResource($news);
     }
 }
