@@ -10,5 +10,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 Route::resource('news', NewsController::class);
-Route::resource('rubrics', RubricController::class);
-Route::resource('authors', AuthorController::class);
+Route::post('rubrics', [RubricController::class, 'store'])->name('rubrics.store');
+Route::get('authors', [AuthorController::class, 'index'])->name('authors.index');
+Route::post('authors', [AuthorController::class, 'store'])->name('authors.store');
