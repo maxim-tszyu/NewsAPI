@@ -3,21 +3,17 @@
 namespace Database\Seeders;
 
 use App\Models\Author;
-use App\Models\User;
+use Database\Factories\AuthorFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class AuthorSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        $this->call(AuthorSeeder::class);
+        Author::factory(50)->create();
     }
 }
