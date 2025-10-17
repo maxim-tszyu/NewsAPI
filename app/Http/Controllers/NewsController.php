@@ -17,7 +17,9 @@ class NewsController extends Controller
             $query->where('title', 'like', '%' . $request->query('query') . '%');
         }
 
-        return NewsResource::collection($query->with('rubrics','author')->orderBy('publish_date', 'desc')->paginate(20)->withQueryString());
+        return NewsResource::collection(
+            $query->with('rubrics', 'author')->orderBy('publish_date', 'desc')->paginate(20)->withQueryString()
+        );
     }
 
     public function store(StoreNewsRequest $request)

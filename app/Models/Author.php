@@ -15,6 +15,9 @@ class Author extends Model
 
     protected $table = "authors";
     protected $guarded = [];
+    protected $casts = [
+        'avatar' => 'string',
+    ];
 
     public function news(): HasMany
     {
