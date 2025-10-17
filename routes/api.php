@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('rubrics/{rubric}', [RubricController::class, 'show'])->name('rubrics.show');
     Route::post('rubrics', [RubricController::class, 'store'])->name('rubrics.store');
-    Route::get('rubric/{rubric}/news', [RubricController::class, 'allNews'])->name('rubrics.news');
+    Route::get('rubrics/{rubric}/news', [RubricController::class, 'allNews'])->name('rubrics.news');
 
     Route::get('authors', [AuthorController::class, 'index'])->name('authors.index');
     Route::get('authors/{author}', [AuthorController::class, 'show'])->name('authors.show');
