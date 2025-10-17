@@ -1,61 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# NewsAPI
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+REST API для новостного каталога, реализованный на Laravel.
+Проект позволяет управлять новостями, авторами и рубриками, а также предоставляет аутентификацию через token-based систему (Laravel Sanctum).
 
-## About Laravel
+Документация Swagger доступна по адресу:
+[http://localhost:8000/api/documentation#/](http://localhost:8000/api/documentation#/)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Требования
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* PHP >= 8.2
+* Composer
+* MySQL
+* Laravel 12
+---
 
-## Learning Laravel
+## Установка
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. **Клонировать репозиторий**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/maxim-tszyu/NewsAPI.git
+cd NewsAPI
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **Установить зависимости через Composer**
 
-## Laravel Sponsors
+```bash
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. **Скопировать файл окружения**
 
-### Premium Partners
+```bash
+cp .env.example .env
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+4. **Сгенерировать ключ приложения**
 
-## Contributing
+```bash
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. **Настроить базу данных**
+   В `.env` укажите ваши данные:
 
-## Code of Conduct
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=newsapi
+DB_USERNAME=root
+DB_PASSWORD=secret
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. **Выполнить миграции**
 
-## Security Vulnerabilities
+```bash
+php artisan migrate --seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7. **(Опционально) Создать storage link для публичного доступа к аватарам**
 
-## License
+```bash
+php artisan storage:link
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+8. **Сгенерировать Swagger документацию**
+
+```bash
+php artisan l5-swagger:generate
+```
+
+9. **Запуск локального сервера**
+
+```bash
+php artisan serve
+# API будет доступно по адресу:
+http://127.0.0.1:8000
+```
+
+---
+
+## Регистрация и аутентификация
+
+Перед использованием API необходимо зарегистрироваться через endpoint:
+
+```http
+POST /api/v1/register
+```
+
+После успешной регистрации вы получите token, который нужно использовать для доступа к защищённым эндпоинтам.
+
+Для выхода из системы используется endpoint:
+
+```http
+POST /api/v1/logout
+```
+
+---
+
+## Документация API
+
+Swagger документация доступна после генерации:
+
+[http://localhost:8000/api/documentation#/](http://localhost:8000/api/documentation#/)
+
+Документация содержит все эндпоинты, схемы запросов (`StoreNewsRequest`, `StoreAuthorRequest` и т.д.) и примеры ответов.
+
+---
+
+## Основные возможности
+
+* CRUD для новостей
+* CRUD для авторов
+* CRUD для рубрик
+* Получение новостей конкретного автора
+* Получение новостей по рубрике, включая дочерние
+* Поиск новостей по заголовку
+* Token-based аутентификация
+* Swagger документация для всех API эндпоинтов
+
+---
+
+## Дополнительно
+
+* Очереди для отправки email авторам при добавлении новости
+* Валидация через FormRequest
+* Accessors & Mutators для работы с аватарами
+* Использование Middleware для защиты эндпоинтов
+
+---
+
+## Структура проекта (кратко)
+
+* `app/Models` – модели новостей, авторов, рубрик
+* `app/Http/Controllers` – контроллеры API
+* `app/Http/Requests` – кастомные FormRequest для валидации
+* `app/Services` – вспомогательные сервисы (например, RubricHelperService)
+* `routes/api.php` – маршруты API
+* `database/migrations` – миграции базы данных
