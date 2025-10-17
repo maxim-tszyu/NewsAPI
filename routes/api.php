@@ -6,7 +6,7 @@ use App\Http\Controllers\api\V1\NewsController;
 use App\Http\Controllers\api\V1\RubricController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('api/v1')->group(function () {
+Route::prefix('v1/')->group(function () {
     Route::post('register', [AuthController::class, 'register'])->name('api.register');
     Route::post('login', [AuthController::class, 'login'])->name('api.login');
 
