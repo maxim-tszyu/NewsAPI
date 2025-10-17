@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Mail\NewsUploadedMail;
-use App\Models\Author;
 use App\Models\News;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;

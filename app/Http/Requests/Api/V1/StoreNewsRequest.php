@@ -1,25 +1,31 @@
 <?php
 
-namespace App\Http\Requests\api\v1;
+namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="StoreNewsRequest",
+ *     type="object",
+ *     title="Store News Request",
+ *     description="Данные для создания новости",
+ *     required={"title","announcement","text","publish_date","author_id"},
+ *     @OA\Property(property="title", type="string", example="Заголовок новости", description="Заголовок новости"),
+ *     @OA\Property(property="announcement", type="string", example="Краткое описание", description="Анонс новости"),
+ *     @OA\Property(property="text", type="string", example="Полный текст новости", description="Текст новости"),
+ *     @OA\Property(property="publish_date", type="string", format="date-time", example="2025-10-17 12:00:00", description="Дата и время публикации"),
+ *     @OA\Property(property="author_id", type="integer", example=1, description="ID автора"),
+ *     @OA\Property(property="rubrics", type="array", @OA\Items(type="integer"), nullable=true, description="Список ID рубрик")
+ * )
+ */
 class StoreNewsRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [

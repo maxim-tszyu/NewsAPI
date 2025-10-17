@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\api\v1\AuthController;
-use App\Http\Controllers\api\v1\AuthorController;
-use App\Http\Controllers\api\v1\NewsController;
-use App\Http\Controllers\api\v1\RubricController;
+use App\Http\Controllers\api\V1\AuthController;
+use App\Http\Controllers\api\V1\AuthorController;
+use App\Http\Controllers\api\V1\NewsController;
+use App\Http\Controllers\api\V1\RubricController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api/v1')->group(function () {

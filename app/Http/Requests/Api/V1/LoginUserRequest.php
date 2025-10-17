@@ -1,25 +1,39 @@
 <?php
 
-namespace App\Http\Requests\api\v1;
+namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="LoginUserRequest",
+ *     type="object",
+ *     title="Login User Request",
+ *     description="Данные для авторизации пользователя",
+ *     required={"email","password"},
+ *     @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         format="email",
+ *         example="john@example.com",
+ *         description="Email пользователя"
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         type="string",
+ *         format="password",
+ *         example="password123",
+ *         description="Пароль пользователя"
+ *     )
+ * )
+ */
 class LoginUserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [

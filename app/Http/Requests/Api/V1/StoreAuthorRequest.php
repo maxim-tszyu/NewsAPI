@@ -1,25 +1,27 @@
 <?php
 
-namespace App\Http\Requests\api\v1;
+namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+/**
+ * @OA\Schema(
+ *     schema="StoreAuthorRequest",
+ *     type="object",
+ *     title="Store Author Request",
+ *     description="Данные для создания автора",
+ *     required={"full_name","email"},
+ *     @OA\Property(property="full_name", type="string", example="Айболат Кулатай", description="ФИО автора"),
+ *     @OA\Property(property="email", type="string", format="email", example="author@example.com", description="Email автора"),
+ *     @OA\Property(property="avatar", type="string", format="binary", nullable=true, description="Аватар автора")
+ * )
+ */
 
 class StoreAuthorRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [

@@ -1,0 +1,879 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "News API",
+        "description": "Документация для News API (Laravel + Swagger)",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Основной сервер API"
+        }
+    ],
+    "paths": {
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Регистрация нового пользователя",
+                "description": "Создаёт нового пользователя и возвращает токен авторизации.",
+                "operationId": "ad77fe138bcb384ad65d167d5c8d1cc0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Пользователь успешно зарегистрирован",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "john@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abcdef123456..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        },
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизация пользователя",
+                "description": "Возвращает токен для доступа к API при успешном входе.",
+                "operationId": "bae68d1c55329ecb6e41f48285840c8f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешная авторизация",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "john@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abcdef123456..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неверные данные"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        },
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Выход из системы",
+                "description": "Удаляет текущий токен авторизации пользователя.",
+                "operationId": "c5cdd87fdbf9d0f95dede875bd023dec",
+                "responses": {
+                    "200": {
+                        "description": "Пользователь успешно вышел из системы",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Вы вышли из системы"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизован"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/authors": {
+            "get": {
+                "tags": [
+                    "Authors"
+                ],
+                "summary": "Получить список авторов",
+                "description": "Возвращает пагинированный список всех авторов, отсортированных по ФИО в порядке убывания.",
+                "operationId": "ebf96f9667383f3fd5fdb1a35fa042af",
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ со списком авторов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/AuthorResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Authors"
+                ],
+                "summary": "Создать нового автора",
+                "description": "Добавляет нового автора в базу данных. Прикреплённый аватар сохраняется в публичном хранилище.",
+                "operationId": "ff16988993606f7d0225a18972ea43a1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "full_name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "Айболат Кулатай"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "aibolat@example.com"
+                                    },
+                                    "avatar": {
+                                        "description": "Файл аватарки (необязательно)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Автор успешно создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthorResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Неавторизован"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/authors/{id}": {
+            "get": {
+                "tags": [
+                    "Authors"
+                ],
+                "summary": "Получить все новости конкретного автора",
+                "description": "Возвращает список новостей, написанных указанным автором, включая рубрики и самого автора.",
+                "operationId": "6ff4558235c582c414ae974cf4600ef2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID автора",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ с новостями автора",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/NewsResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Автор не найден"
+                    }
+                }
+            }
+        },
+        "/api/v1/news/search": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Search news by query",
+                "description": "Returns a paginated list of news filtered by search query.",
+                "operationId": "6b600ff2aca909d384af0257c2ab774b",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Search term for filtering news by title",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "elections"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of news",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/NewsResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/news": {
+            "post": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Create a new news entry",
+                "description": "Stores a newly created news item in the database.",
+                "operationId": "72b3aa68c19c2b7c8029a69abe0e6412",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreNewsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfully created news item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NewsResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/news/{id}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get a specific news item",
+                "description": "Returns a single news item by ID.",
+                "operationId": "19bb8d05421a01d0abd3a4734e8c13de",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "News ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 5
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "News item",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NewsResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "News not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/rubrics/{id}": {
+            "get": {
+                "tags": [
+                    "Rubrics"
+                ],
+                "summary": "Get news belonging to a specific rubric",
+                "description": "Returns paginated news items that directly belong to a given rubric.",
+                "operationId": "d681f2d0ad9077d8a4796487436c640c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Rubric ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 3
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of news for the given rubric",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/NewsResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Rubric not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/rubrics/{id}/all-news": {
+            "get": {
+                "tags": [
+                    "Rubrics"
+                ],
+                "summary": "Get all descendant news for a rubric",
+                "description": "Returns paginated news for a rubric including all its descendant rubrics recursively.",
+                "operationId": "0bf50959788dd488acaa44c3b7da4eaf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Rubric ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 3
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of news from rubric and its descendants",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/NewsResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Rubric not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/rubrics": {
+            "post": {
+                "tags": [
+                    "Rubrics"
+                ],
+                "summary": "Create a new rubric",
+                "description": "Creates a new rubric category. You can optionally pass a parent_id to create a subrubric.",
+                "operationId": "4de2a1ce9f47f100f99998b37e7f9012",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreRubricRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Rubric successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RubricResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginUserRequest": {
+                "title": "Login User Request",
+                "description": "Данные для авторизации пользователя",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Email пользователя",
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "description": "Пароль пользователя",
+                        "type": "string",
+                        "format": "password",
+                        "example": "password123"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreAuthorRequest": {
+                "title": "Store Author Request",
+                "description": "Данные для создания автора",
+                "required": [
+                    "full_name",
+                    "email"
+                ],
+                "properties": {
+                    "full_name": {
+                        "description": "ФИО автора",
+                        "type": "string",
+                        "example": "Айболат Кулатай"
+                    },
+                    "email": {
+                        "description": "Email автора",
+                        "type": "string",
+                        "format": "email",
+                        "example": "author@example.com"
+                    },
+                    "avatar": {
+                        "description": "Аватар автора",
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "StoreNewsRequest": {
+                "title": "Store News Request",
+                "description": "Данные для создания новости",
+                "required": [
+                    "title",
+                    "announcement",
+                    "text",
+                    "publish_date",
+                    "author_id"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Заголовок новости",
+                        "type": "string",
+                        "example": "Заголовок новости"
+                    },
+                    "announcement": {
+                        "description": "Анонс новости",
+                        "type": "string",
+                        "example": "Краткое описание"
+                    },
+                    "text": {
+                        "description": "Текст новости",
+                        "type": "string",
+                        "example": "Полный текст новости"
+                    },
+                    "publish_date": {
+                        "description": "Дата и время публикации",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-10-17 12:00:00"
+                    },
+                    "author_id": {
+                        "description": "ID автора",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "rubrics": {
+                        "description": "Список ID рубрик",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "StoreRubricRequest": {
+                "title": "Store Rubric Request",
+                "description": "Данные для создания рубрики",
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Название рубрики",
+                        "type": "string",
+                        "example": "Спорт"
+                    },
+                    "parent_id": {
+                        "description": "ID родительской рубрики (если есть)",
+                        "type": "integer",
+                        "example": 2,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "StoreUserRequest": {
+                "title": "Store User Request",
+                "description": "Данные для регистрации пользователя",
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Имя пользователя",
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "description": "Email пользователя",
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "description": "Пароль пользователя",
+                        "type": "string",
+                        "format": "password",
+                        "example": "password123"
+                    },
+                    "password_confirmation": {
+                        "description": "Подтверждение пароля",
+                        "type": "string",
+                        "format": "password",
+                        "example": "password123"
+                    }
+                },
+                "type": "object"
+            },
+            "AuthorResource": {
+                "title": "Author Resource",
+                "description": "Represents an author entity",
+                "properties": {
+                    "id": {
+                        "description": "Author ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "full_name": {
+                        "description": "Full name of the author",
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "description": "Author email address",
+                        "type": "string",
+                        "example": "john@example.com"
+                    },
+                    "avatar": {
+                        "description": "Path to avatar image (if stored)",
+                        "type": "string",
+                        "example": "avatars/john.jpg",
+                        "nullable": true
+                    },
+                    "avatar_url": {
+                        "description": "Full URL to avatar image",
+                        "type": "string",
+                        "example": "https://example.com/storage/avatars/john.jpg",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "NewsResource": {
+                "title": "News Resource",
+                "description": "Represents a news item",
+                "properties": {
+                    "id": {
+                        "description": "News ID",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "title": {
+                        "description": "Title of the news",
+                        "type": "string",
+                        "example": "City Day Celebrations"
+                    },
+                    "announcement": {
+                        "description": "Short announcement or preview",
+                        "type": "string",
+                        "example": "City Day will be celebrated with various events..."
+                    },
+                    "text": {
+                        "description": "Full news content",
+                        "type": "string",
+                        "example": "The City Day celebration will include concerts, exhibitions, and fireworks..."
+                    },
+                    "publish_date": {
+                        "description": "Publication date and time",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-10-15T12:00:00Z"
+                    },
+                    "author": {
+                        "$ref": "#/components/schemas/AuthorResource"
+                    },
+                    "rubrics": {
+                        "description": "List of associated rubrics",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RubricResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "RubricResource": {
+                "title": "Rubric Resource",
+                "description": "Represents a rubric (category) entity",
+                "properties": {
+                    "id": {
+                        "description": "Rubric ID",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "name": {
+                        "description": "Name of the rubric",
+                        "type": "string",
+                        "example": "City Life"
+                    },
+                    "parent_id": {
+                        "description": "Parent rubric ID (null if top-level)",
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "children": {
+                        "description": "Nested child rubrics (if loaded)",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RubricResource"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Authors",
+            "description": "Authors"
+        },
+        {
+            "name": "News",
+            "description": "News"
+        },
+        {
+            "name": "Rubrics",
+            "description": "Rubrics"
+        }
+    ]
+}

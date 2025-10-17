@@ -1,25 +1,29 @@
 <?php
 
-namespace App\Http\Requests\api\v1;
+namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+/**
+ * @OA\Schema(
+ *     schema="StoreUserRequest",
+ *     type="object",
+ *     title="Store User Request",
+ *     description="Данные для регистрации пользователя",
+ *     required={"name","email","password","password_confirmation"},
+ *     @OA\Property(property="name", type="string", example="John Doe", description="Имя пользователя"),
+ *     @OA\Property(property="email", type="string", format="email", example="john@example.com", description="Email пользователя"),
+ *     @OA\Property(property="password", type="string", format="password", example="password123", description="Пароль пользователя"),
+ *     @OA\Property(property="password_confirmation", type="string", format="password", example="password123", description="Подтверждение пароля")
+ * )
+ */
 
 class StoreUserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
