@@ -12,12 +12,12 @@ class AuthorController extends Controller
 {
     public function index()
     {
-        return AuthorResource::collection(Author::all());
+        return AuthorResource::collection(Author::orderBy('full_name','desc')->paginate(20)->withQueryString());
     }
 
     public function show(Author $author)
     {
-        $news = $author->news()->with('rubrics')->get();
+        $news = $author->news()->with('rubrics','author')->orderBy('publish_date', 'desc')->paginate(20)->withQueryString();
         return NewsResource::collection($news);
     }
 

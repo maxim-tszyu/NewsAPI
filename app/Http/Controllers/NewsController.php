@@ -9,9 +9,6 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function search(Request $request)
     {
         $query = News::query();
@@ -20,12 +17,9 @@ class NewsController extends Controller
             $query->where('title', 'like', '%' . $request->query('query') . '%');
         }
 
-        return NewsResource::collection($query->get());
+        return NewsResource::collection($query->with('rubrics','author')->orderBy('publish_date', 'desc')->paginate(20)->withQueryString());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreNewsRequest $request)
     {
         $validated = $request->validated();

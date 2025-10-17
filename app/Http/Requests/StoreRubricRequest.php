@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreRubricRequest extends FormRequest
 {
@@ -26,6 +25,17 @@ class StoreRubricRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:rubrics,id',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Необходимо указать название рубрики',
+            'title.string' => 'Название рубрики должно быть строкой',
+            'title.max' => 'Название рубрики не может превышать 255 символов',
+
+            'parent_id.exists' => 'Указанная родительская рубрика не найдена',
         ];
     }
 }

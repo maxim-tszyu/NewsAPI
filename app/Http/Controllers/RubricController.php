@@ -17,7 +17,7 @@ class RubricController extends Controller
 
     public function show(Rubric $rubric)
     {
-        $news = $rubric->news()->with('rubrics')->get();
+        $news = $rubric->news()->with('rubrics','author')->orderBy('publish_date', 'desc')->paginate(20)->withQueryString();
         return NewsResource::collection($news);
     }
 
@@ -26,7 +26,7 @@ class RubricController extends Controller
         $allRubricIds = $this->service->getDescendantIds($rubric);
         $allRubricIds[] = $rubric->id;
 
-        $news = News::whereHas('rubrics', fn($q) => $q->whereIn('rubric_id', $allRubricIds))->get();
+        $news = News::whereHas('rubrics', fn($q) => $q->whereIn('rubric_id', $allRubricIds))->with('rubrics','author')->orderBy('publish_date','desc')->paginate(20)->withQueryString();
 
         return NewsResource::collection($news);
     }
