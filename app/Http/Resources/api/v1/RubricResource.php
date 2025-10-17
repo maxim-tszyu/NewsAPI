@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\api\v1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NewsResource extends JsonResource
+class RubricResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,11 +17,7 @@ class NewsResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'announcement' => $this->announcement,
-            'text' => $this->text,
-            'publish_date' => $this->publish_date,
-            'author' => new AuthorResource($this->author),
-            'rubrics' => RubricResource::collection($this->rubrics),
+            'parent_id' => $this->parent_id,
         ];
     }
 }

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api\v1;
 
-use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Request;
+use App\Http\Requests\api\v1\LoginUserRequest;
+use App\Http\Requests\api\v1\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 

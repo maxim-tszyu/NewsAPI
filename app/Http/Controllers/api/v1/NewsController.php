@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api\v1;
 
-use App\Http\Requests\StoreNewsRequest;
-use App\Http\Resources\NewsResource;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\api\v1\StoreNewsRequest;
+use App\Http\Resources\api\v1\NewsResource;
 use App\Models\News;
 use Illuminate\Http\Request;
 

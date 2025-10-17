@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api\v1;
 
-use App\Http\Requests\StoreRubricRequest;
-use App\Http\Resources\NewsResource;
-use App\Http\Resources\RubricResource;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\api\v1\StoreRubricRequest;
+use App\Http\Resources\api\v1\NewsResource;
+use App\Http\Resources\api\v1\RubricResource;
 use App\Models\News;
 use App\Models\Rubric;
 use App\Services\RubricHelperService;
